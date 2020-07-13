@@ -22,6 +22,8 @@ class CalcController {
 
         },1000 );
 
+        this.setLestNumberToDisplay();
+
     }
     // Optimizing the event to receive more than one parameter.
     addEventListenerAll(element, events, fn){
@@ -36,11 +38,15 @@ class CalcController {
 
         this._operation = [];
 
+        this.setLestNumberToDisplay(); // Update display
+
     }
 
     clearEntry(){
 
         this._operation.pop(); 
+
+        this.setLestNumberToDisplay(); // Update display
     }
    
     getLastOperation(){
@@ -72,11 +78,31 @@ class CalcController {
 
     calc(){
 
-        let lest = this._operation.pop();
+        let last = '';
+
+        if(this._operation.length > 3) {
+            last = this._operation.pop();
+        }
+
         let result = eval(this._operation.join(""));
-        this._operation = [result,lest];
+
+        if (last == '%') {
+
+            result /= 100;
+
+            this._operation = [result];
+    
+        } else {
+
+        this._operation = [result];
+
+        if (last) this._operation.push(last);
+    
+
+        }
         this.setLestNumberToDisplay(); // Update display
-        
+
+        console.log(this._operation);
     }
 
     setLestNumberToDisplay(){
@@ -90,6 +116,9 @@ class CalcController {
                 break;
             }
        }  
+        if(!lestNumber){
+            lestNumber = 0;
+        }    
         
        this.displayCalc = lestNumber;
 
@@ -169,6 +198,7 @@ class CalcController {
                  break;
 
             case 'igual':
+                this.calc();
                  break; 
 
             case '0':
