@@ -12,8 +12,35 @@ class CalcController {
         this.initialize();
         this.initButtonsEvents();
         this.initKeyBoard();
+      //this.pasteFromClipboard();
 
-    }    
+    } 
+    // pasteFromClipboard(){
+
+    //     document.addEventListener('paste', e=>{
+
+    //         let text = e.clipboardData.getData('Text');
+
+    //         this.displayCalc = parseFloat(text); 23
+
+    //     });
+    // }
+
+    copyToClipboard(){
+
+        let input = document.createElement('input');
+
+        input.value = this.displayCalc;
+
+        document.body.appendChild(input);
+
+        input.select();
+
+        document.execCommand("copy");
+
+        input.remove();
+
+    }
     // Clock seconds timer.
     initialize(){
 
@@ -76,6 +103,9 @@ class CalcController {
                 case '9':
                     this.addOperation(parseInt(e.key));
                      break; 
+                // case 'c':
+                //     if (e.ctrlKey) this.copyToClipboard();
+                //     break;
             }      
         });
     }
