@@ -15,32 +15,26 @@ class CalcController {
         this.initialize();
         this.initButtonsEvents();
         this.initKeyBoard();
-      //this.pasteFromClipboard();
+        this.pasteFromClipboard();
 
     } 
-    // pasteFromClipboard(){
+    pasteFromClipboard(){
 
-    //     document.addEventListener('paste', e=>{
+        document.addEventListener('paste', e=>{
 
-    //         let text = e.clipboardData.getData('Text');
-
-    //         this.displayCalc = parseFloat(text); 23
-
-    //     });
-    // }
+            let text = e.clipboardData.getData('Text');
+            this.displayCalc = parseFloat(text); 
+            this.addOperation(text);
+        });
+    }
 
     copyToClipboard(){
 
         let input = document.createElement('input');
-
         input.value = this.displayCalc;
-
         document.body.appendChild(input);
-
         input.select();
-
         document.execCommand("copy");
-
         input.remove();
 
     }
@@ -48,7 +42,6 @@ class CalcController {
     initialize(){
 
         this.setDisplayDateTime();
-        
         setInterval(()=> {  this.setDisplayDateTime();
 
         },1000 );
@@ -135,9 +128,9 @@ class CalcController {
                 case '9':
                     this.addOperation(parseInt(e.key));
                      break; 
-                // case 'c':
-                //     if (e.ctrlKey) this.copyToClipboard();
-                //     break;
+                case 'c':
+                    if (e.ctrlKey) this.copyToClipboard();
+                    break;
             }      
         });
     }
@@ -166,7 +159,7 @@ class CalcController {
         this._operation.pop(); 
         this.setLestNumberToDisplay(); // Update display
     }
-   
+
     getLastOperation(){
         
         return this._operation[this._operation.length-1];
@@ -194,14 +187,19 @@ class CalcController {
     }
 
     getResult(){
+
         try{
+
             return eval(this._operation.join(""));
+
         }catch(e){
+
             setTimeout(()=>{
+
                 this.setError();
+
             },1);
         }
-
     }
 
     calc(){
@@ -223,7 +221,6 @@ class CalcController {
         } else if (this._operation.length == 3) {
 
             this._lastNumber = this.getLastItem(false);
-
         }
 
         let result = this.getResult();
@@ -241,7 +238,6 @@ class CalcController {
         }
 
         this.setLestNumberToDisplay(); // Update display
-
     }
 
     getLastItem(isOperator = true){
@@ -253,8 +249,7 @@ class CalcController {
             if (this.isOperator(this._operation[i]) == isOperator) {
                 lastItem = this._operation[i];
                 break;
-            }
-            
+            }    
         }  
 
         if (!lastItem) {
@@ -264,7 +259,6 @@ class CalcController {
 
         return lastItem;
     }
-
 
     setLestNumberToDisplay() {
 
@@ -320,11 +314,15 @@ class CalcController {
         if (typeof lastOperation === 'string' && lastOperation.split('').indexOf('.') > -1) return;
 
         if (this.isOperator(lastOperation) ||!lastOperation ) {
+
             this,this.pushOparation('0.');
+
         } else {
+
             this.setLestOperation(lastOperation.toString() + '.');
 
         }
+        
         this.setLestNumberToDisplay();
     }
 
