@@ -178,7 +178,7 @@ class CalcController {
             } else {
 
            let newValue = this.getLastOperation().toString() + value.toString(); 
-           this.setLestOperation(parseFloat(newValue));
+           this.setLestOperation(newValue);
            this.setLestNumberToDisplay();  // Update display
             }
         }
@@ -193,6 +193,8 @@ class CalcController {
     addDot(){
 
         let lastOperation = this.getLastOperation();
+
+        if (typeof lastOperation === 'string' && lastOperation.split('').indexOf('.') > -1) return;
 
         if (this.isOperator(lastOperation) ||!lastOperation ) {
             this,this.pushOparation('0.');
